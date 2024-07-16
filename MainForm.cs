@@ -18,7 +18,7 @@ namespace ScreenTime
         public MainForm()
         {
             InitializeComponent();
-            DatabaseHelper.InitializeDatabase();
+            //DatabaseHelper.InitializeDatabase();
             settingsControl1.Hide();
             aboutControl1.Hide();
             homeControl1.Show();

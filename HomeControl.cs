@@ -37,9 +37,11 @@ namespace ScreenTime
         public HomeControl()
         {
             InitializeComponent();
+            DatabaseHelper.InitializeDatabase();
             InitializeTimer();
             TodaysUsage();
             BarGenerator barGenerator = new BarGenerator();
+            
             lblColumn.Text = barGenerator.Generate(45);
             lblColumn2.Text = barGenerator.Generate(40);
             lblColumn3.Text = barGenerator.Generate(45);
@@ -140,6 +142,17 @@ namespace ScreenTime
 
         private string GetSimplifiedAppName(string fullAppName)
         {
+            string[] websiteKeywords = new string[] { "YouTube", "/ X", "Reddit", "4chan" };
+
+            // Check if the fullAppName contains any of the website keywords
+            foreach (var keyword in websiteKeywords)
+            {
+                if (fullAppName.Contains(keyword))
+                {
+                    // Return the keyword with the browser name
+                    return $"{keyword}";
+                }
+            }
             int lastHyphenIndex = fullAppName.LastIndexOf('-');
             if (lastHyphenIndex >= 0 && lastHyphenIndex < fullAppName.Length - 1)
             {
