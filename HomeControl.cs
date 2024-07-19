@@ -32,6 +32,7 @@ namespace ScreenTime
         string currentApp;
         int today = DateTimeOffset.UtcNow.Day;
         private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        string status = "Offline";
 
 
         public HomeControl()
@@ -40,20 +41,8 @@ namespace ScreenTime
             DatabaseHelper.InitializeDatabase();
             InitializeTimer();
             TodaysUsage();
-            BarGenerator barGenerator = new BarGenerator();
-            
-            lblColumn.Text = barGenerator.Generate(45);
-            lblColumn2.Text = barGenerator.Generate(40);
-            lblColumn3.Text = barGenerator.Generate(45);
-            lblColumn4.Text = barGenerator.Generate(30);
-            lblColumn5.Text = barGenerator.Generate(15);
-            lblColumn6.Text = barGenerator.Generate(55);
-            lblColumn7.Text = barGenerator.Generate(20);
-            lblColumn8.Text = barGenerator.Generate(30);
-            lblColumn9.Text = barGenerator.Generate(10);
-            lblColumn10.Text = barGenerator.Generate(50);
-            lblColumn11.Text = barGenerator.Generate(5);
-            lblColumn12.Text = barGenerator.Generate(60);
+            status = "Online";
+            statusLbl.Text = status;
 
         }
 
@@ -65,6 +54,12 @@ namespace ScreenTime
             timer.Start();
         }
 
+        private void UpdateStatus(string newStatus)
+        {
+            status = newStatus;
+            statusLbl.Text = status;
+        }
+
         private async void Timer_Tick(object sender, EventArgs e)
         {
             System.Windows.Forms.Timer timer = (System.Windows.Forms.Timer)sender;
@@ -72,6 +67,7 @@ namespace ScreenTime
             int currentDay = DateTimeOffset.UtcNow.Day;
             try
             {
+                UpdateStatus("Online");
                 IntPtr handle = GetForegroundWindow();
                 StringBuilder windowText = new StringBuilder(256);
                 if (GetWindowText(handle, windowText, 256) > 0)
@@ -85,8 +81,23 @@ namespace ScreenTime
                     GetWindowThreadProcessId(handle, out uint processId);
                     string processName = GetProcessNameById((int)processId);
 
-                    finString = $"{simpleAppName} ({processName})";
+                    
 
+                    if (processName.Contains("chrome.exe") && (Constants.BRAINROT_TITLES.Contains(simpleAppName)))
+                    {
+                        processName = simpleAppName;
+                        UpdateStatus("Brain rotting");
+                    }
+
+                    if (Constants.GAMING_TITLES.Contains(processName))
+                    {
+                        UpdateStatus("Gaming");
+                    }
+                    if (Constants.CODING_TITLES.Contains(processName))
+                    {
+                        UpdateStatus("Coding");
+                    }
+                    finString = processName;
 
 
                     // Check if the process name or window title is in the exclusion lists
@@ -118,7 +129,7 @@ namespace ScreenTime
 
 
 
-                    if (currentApp != $"{simpleAppName} ({processName})")
+                    if (currentApp != processName)
                     {
                         if (currentApp != null)
                         {
@@ -127,11 +138,11 @@ namespace ScreenTime
                             await Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
                         }
 
-                        currentApp = $"{simpleAppName} ({processName})";
+                        currentApp = processName;
                         start = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                     }
 
-                    appString.Text = $"Currently focused on: \n{finString}";
+                    appString.Text = $"{finString}";
                 }
             }
             finally
@@ -142,7 +153,7 @@ namespace ScreenTime
 
         private string GetSimplifiedAppName(string fullAppName)
         {
-            string[] websiteKeywords = new string[] { "YouTube", "/ X", "Reddit", "4chan" };
+            string[] websiteKeywords = new string[] { "YouTube", "/ X", "Reddit", "4chan", "on X:" };
 
             // Check if the fullAppName contains any of the website keywords
             foreach (var keyword in websiteKeywords)
@@ -150,7 +161,8 @@ namespace ScreenTime
                 if (fullAppName.Contains(keyword))
                 {
                     // Return the keyword with the browser name
-                    return $"{keyword}";
+
+                    return $"{keyword} (chrome.exe)";
                 }
             }
             int lastHyphenIndex = fullAppName.LastIndexOf('-');
@@ -181,9 +193,10 @@ namespace ScreenTime
             // End the current session with the current timestamp
             if (!string.IsNullOrEmpty(currentApp))
             {
+                status = "Offline";
                 end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 Debug.WriteLine($"{currentApp}, Start-{start}, End-{end}");
-                Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end)); 
+                Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
             }
             cancellationTokenSource.Dispose();
         }
@@ -214,7 +227,17 @@ namespace ScreenTime
             foreach (var app in sortedAppUsage)
             {
                 //Debug.WriteLine($"{app.Key}: {app.Value} seconds");
-                if (app.Value > 59)
+
+
+                if (app.Value > 3599)
+                {
+                    TimeSpan timeSpan = TimeSpan.FromSeconds(app.Value);
+                    int minutes = timeSpan.Minutes;
+                    int hours = timeSpan.Hours;
+                    testing += $"{app.Key} for {hours} hours and {minutes} minutes.\n";
+
+                }
+                else if (app.Value > 59)
                 {
                     TimeSpan timeSpan = TimeSpan.FromSeconds(app.Value);
                     int minutes = timeSpan.Minutes;
@@ -234,11 +257,6 @@ namespace ScreenTime
         private void appString_Click(object sender, EventArgs e)
         {
            
-        }
-
-        private void homeLbl_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
@@ -264,6 +282,11 @@ namespace ScreenTime
         private void button1_Click(object sender, EventArgs e)
         {
             TodaysUsage();
+        }
+
+        private void statusLbl_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
