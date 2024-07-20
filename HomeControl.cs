@@ -41,7 +41,7 @@ namespace ScreenTime
             DatabaseHelper.InitializeDatabase();
             InitializeTimer();
             TodaysUsage();
-            status = "Online";
+            UpdateStatus("Online");
             statusLbl.Text = status;
 
         }
@@ -58,6 +58,7 @@ namespace ScreenTime
         {
             status = newStatus;
             statusLbl.Text = status;
+            Debug.WriteLine($"Sent status: {status}");
         }
 
         private async void Timer_Tick(object sender, EventArgs e)
@@ -67,7 +68,6 @@ namespace ScreenTime
             int currentDay = DateTimeOffset.UtcNow.Day;
             try
             {
-                UpdateStatus("Online");
                 IntPtr handle = GetForegroundWindow();
                 StringBuilder windowText = new StringBuilder(256);
                 if (GetWindowText(handle, windowText, 256) > 0)
@@ -80,24 +80,14 @@ namespace ScreenTime
                     // Get the process ID of the active window
                     GetWindowThreadProcessId(handle, out uint processId);
                     string processName = GetProcessNameById((int)processId);
-
-                    
-
                     if (processName.Contains("chrome.exe") && (Constants.BRAINROT_TITLES.Contains(simpleAppName)))
                     {
                         processName = simpleAppName;
-                        UpdateStatus("Brain rotting");
+                        //UpdateStatus("Brain rotting");
                     }
 
-                    if (Constants.GAMING_TITLES.Contains(processName))
-                    {
-                        UpdateStatus("Gaming");
-                    }
-                    if (Constants.CODING_TITLES.Contains(processName))
-                    {
-                        UpdateStatus("Coding");
-                    }
-                    finString = processName;
+
+
 
 
                     // Check if the process name or window title is in the exclusion lists
@@ -140,6 +130,23 @@ namespace ScreenTime
 
                         currentApp = processName;
                         start = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                        if (processName.Contains("chrome.exe") && (Constants.BRAINROT_TITLES.Contains(simpleAppName)))
+                        {
+                            processName = simpleAppName;
+                            UpdateStatus("Brain rotting");
+                        }
+                        else if (Constants.GAMING_TITLES.Contains(processName))
+                        {
+                            UpdateStatus("Gaming");
+                        }
+                        else if (Constants.CODING_TITLES.Contains(processName))
+                        {
+                            UpdateStatus("Coding");
+                        }
+                        else {
+                            UpdateStatus("Online");
+                        }
+                        finString = processName;
                     }
 
                     appString.Text = $"{finString}";
@@ -193,7 +200,7 @@ namespace ScreenTime
             // End the current session with the current timestamp
             if (!string.IsNullOrEmpty(currentApp))
             {
-                status = "Offline";
+                UpdateStatus("Offline");
                 end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 Debug.WriteLine($"{currentApp}, Start-{start}, End-{end}");
                 Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
@@ -224,6 +231,8 @@ namespace ScreenTime
 
             var sortedAppUsage = appUsageSeconds.OrderByDescending(app => app.Value);
 
+            int totalUsage = 0;
+
             foreach (var app in sortedAppUsage)
             {
                 //Debug.WriteLine($"{app.Key}: {app.Value} seconds");
@@ -232,6 +241,7 @@ namespace ScreenTime
                 if (app.Value > 3599)
                 {
                     TimeSpan timeSpan = TimeSpan.FromSeconds(app.Value);
+                    totalUsage += app.Value;
                     int minutes = timeSpan.Minutes;
                     int hours = timeSpan.Hours;
                     testing += $"{app.Key} for {hours} hours and {minutes} minutes.\n";
@@ -240,15 +250,23 @@ namespace ScreenTime
                 else if (app.Value > 59)
                 {
                     TimeSpan timeSpan = TimeSpan.FromSeconds(app.Value);
+                    totalUsage += app.Value;
                     int minutes = timeSpan.Minutes;
                     testing += $"{app.Key} for {minutes} minutes.\n";
                 }
                 else
                 {
+                    totalUsage += app.Value;
                     testing += $"{app.Key} for {app.Value} seconds.\n";
                 }
                 
             }
+            TimeSpan timeSpan1 = TimeSpan.FromSeconds(totalUsage);
+            int totalMinutes = timeSpan1.Minutes;
+            int totalHours = timeSpan1.Hours;
+
+
+            testing += $"\nTotal of {totalHours} hours and {totalMinutes} minutes.";
 
             todayUsageLbl.Text = testing;
         }

@@ -10,11 +10,7 @@ namespace ScreenTime
     public class CalendarHelper
     {
         
-        /*
-         *  -----------------------------BIG DISCLAIMER-----------------------------
-         *  -10800 in lines 27 and 47 corresponds to my timezone which now is GMT+3. Will add feature to configure that in future
-         * 
-         */
+
         public long GetDayStart(string dateString)
         {
             DateTime dateTime;

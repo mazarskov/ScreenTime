@@ -62,38 +62,49 @@ namespace ScreenTime
             var appUsageSeconds = analyzer.CalculateAppUsageSeconds(dataFromDay);
 
             string testing = "";
+            int totalUsage = 0;
 
-            foreach (var app in appUsageSeconds)
+
+            var sortedAppUsage = appUsageSeconds.OrderByDescending(app => app.Value);
+
+            foreach (var app in sortedAppUsage)
             {
                 //Debug.WriteLine($"{app.Key}: {app.Value} seconds");
 
-                testing += $"{app.Key} for {app.Value} seconds.\n";
+
+                if (app.Value > 3599)
+                {
+                    TimeSpan timeSpan = TimeSpan.FromSeconds(app.Value);
+                    totalUsage += app.Value;
+                    int minutes = timeSpan.Minutes;
+                    int hours = timeSpan.Hours;
+                    testing += $"{app.Key} for {hours} hours and {minutes} minutes.\n";
+
+                }
+                else if (app.Value > 59)
+                {
+                    TimeSpan timeSpan = TimeSpan.FromSeconds(app.Value);
+                    totalUsage += app.Value;
+                    int minutes = timeSpan.Minutes;
+                    testing += $"{app.Key} for {minutes} minutes.\n";
+                }
+                else
+                {
+                    totalUsage += app.Value;
+                    testing += $"{app.Key} for {app.Value} seconds.\n";
+                }
+
             }
-            Debug.WriteLine(testing);
-            // Clear existing items
-            listViewAppUsage.Items.Clear();
-            listViewAppUsage.View = View.Details;
+            TimeSpan timeSpan1 = TimeSpan.FromSeconds(totalUsage);
+            int totalMinutes = timeSpan1.Minutes;
+            int totalHours = timeSpan1.Hours;
 
-            // Clear any existing columns
-            listViewAppUsage.Columns.Clear();
 
-            // Add columns to the ListView
-            listViewAppUsage.Columns.Add("App Name", 150, HorizontalAlignment.Left);
-            listViewAppUsage.Columns.Add("Usage Seconds", 100, HorizontalAlignment.Left);
-
-            // Populate the ListView
-            foreach (var app in appUsageSeconds)
-            {
-                ListViewItem item = new ListViewItem(app.Key);
-                item.SubItems.Add(app.Value.ToString());
-                listViewAppUsage.Items.Add(item);
-            }
-
-            // Adjust the column width
-            listViewAppUsage.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            testing += $"\nTotal of {totalHours} hours and {totalMinutes} minutes.";
+            dayUsageLbl.Text = testing;
         }
 
-        private void listViewAppUsage_SelectedIndexChanged(object sender, EventArgs e)
+        private void dayUsageLbl_Click(object sender, EventArgs e)
         {
 
         }
