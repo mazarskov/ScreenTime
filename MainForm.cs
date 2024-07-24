@@ -14,17 +14,18 @@ namespace ScreenTime
 {
     public partial class MainForm : Form
     {
-        private HomeControl homeControl;
+        //private HomeControl homeControl;
         public MainForm()
         {
             InitializeComponent();
             //DatabaseHelper.InitializeDatabase();
             settingsControl1.Hide();
             aboutControl1.Hide();
+            reportsControl1.Hide();
             homeControl1.Show();
             homeControl1.BringToFront();
+            //homeControl = FindHomeControl();
 
-            homeControl = FindHomeControl();
             this.FormClosing += MainForm_FormClosing;
             this.Text = "ScreenTime";
         }
@@ -52,6 +53,15 @@ namespace ScreenTime
             aboutControl1.Show();
             aboutControl1.BringToFront();
         }
+
+        private void ShowReports()
+        {
+            homeControl1.Hide();
+            settingsControl1.Hide();
+            aboutControl1.Hide();
+            reportsControl1.Show();
+            reportsControl1.BringToFront();
+        }
         
 
         private void homeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -78,7 +88,7 @@ namespace ScreenTime
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            homeControl.HandleFormClosing();
+            homeControl1.HandleFormClosing();
         }
 
         private void settingsControl1_Load(object sender, EventArgs e)
@@ -89,6 +99,11 @@ namespace ScreenTime
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowAbout();
+        }
+
+        private void reportsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowReports();
         }
     }
 }

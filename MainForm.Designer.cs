@@ -32,9 +32,11 @@
             this.homeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutControl1 = new ScreenTime.AboutControl();
             this.settingsControl1 = new ScreenTime.SettingsControl();
             this.homeControl1 = new ScreenTime.HomeControl();
-            this.aboutControl1 = new ScreenTime.AboutControl();
+            this.reportsControl1 = new ScreenTime.ReportsControl();
+            this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,6 +44,7 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.homeToolStripMenuItem,
+            this.reportsToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -71,6 +74,13 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // aboutControl1
+            // 
+            this.aboutControl1.Location = new System.Drawing.Point(0, 27);
+            this.aboutControl1.Name = "aboutControl1";
+            this.aboutControl1.Size = new System.Drawing.Size(800, 411);
+            this.aboutControl1.TabIndex = 3;
+            // 
             // settingsControl1
             // 
             this.settingsControl1.Location = new System.Drawing.Point(0, 27);
@@ -87,18 +97,26 @@
             this.homeControl1.Size = new System.Drawing.Size(800, 411);
             this.homeControl1.TabIndex = 1;
             // 
-            // aboutControl1
+            // reportsControl1
             // 
-            this.aboutControl1.Location = new System.Drawing.Point(0, 27);
-            this.aboutControl1.Name = "aboutControl1";
-            this.aboutControl1.Size = new System.Drawing.Size(800, 411);
-            this.aboutControl1.TabIndex = 3;
+            this.reportsControl1.Location = new System.Drawing.Point(0, 27);
+            this.reportsControl1.Name = "reportsControl1";
+            this.reportsControl1.Size = new System.Drawing.Size(800, 421);
+            this.reportsControl1.TabIndex = 4;
+            // 
+            // reportsToolStripMenuItem
+            // 
+            this.reportsToolStripMenuItem.Name = "reportsToolStripMenuItem";
+            this.reportsToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.reportsToolStripMenuItem.Text = "Reports";
+            this.reportsToolStripMenuItem.Click += new System.EventHandler(this.reportsToolStripMenuItem_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.reportsControl1);
             this.Controls.Add(this.aboutControl1);
             this.Controls.Add(this.settingsControl1);
             this.Controls.Add(this.homeControl1);
@@ -123,6 +141,8 @@
         private HomeControl homeControl1;
         private SettingsControl settingsControl1;
         private AboutControl aboutControl1;
+        private ReportsControl reportsControl1;
+        private System.Windows.Forms.ToolStripMenuItem reportsToolStripMenuItem;
     }
 }
 

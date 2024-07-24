@@ -38,9 +38,8 @@ namespace ScreenTime
         public HomeControl()
         {
             InitializeComponent();
-            DatabaseHelper.InitializeDatabase();
             InitializeTimer();
-            TodaysUsage();
+            //TodaysUsage();
             UpdateStatus("Online");
             statusLbl.Text = status;
 
@@ -98,7 +97,7 @@ namespace ScreenTime
                         {
                             end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                             Debug.WriteLine($"{currentApp}, Start-{start}, End-{end}");
-                            await Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
+                            Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
                             currentApp = null; // Reset currentApp
                         }
                         appString.Text = "Tracking paused for system app";
@@ -111,7 +110,7 @@ namespace ScreenTime
                         {
                             end = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - 1;
                             Debug.WriteLine($"{currentApp}, Start-{start}, End-{end}");
-                            await Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
+                            Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
                         }
 
                         today = currentDay;
@@ -125,7 +124,7 @@ namespace ScreenTime
                         {
                             end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                             Debug.WriteLine($"{currentApp}, Start-{start}, End-{end}");
-                            await Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
+                            Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
                         }
 
                         currentApp = processName;
