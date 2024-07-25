@@ -53,12 +53,26 @@ namespace ScreenTime
             timer.Start();
         }
 
+        private void InitDbTimer()
+        {
+            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+            timer.Interval = 5000; // 1 second
+            timer.Tick += DbTimer_Tick;
+            timer.Start();
+        }
+
         private void UpdateStatus(string newStatus)
         {
             status = newStatus;
             statusLbl.Text = status;
             Debug.WriteLine($"Sent status: {status}");
         }
+
+        private async void DbTimer_Tick(object sender, EventArgs e)
+        {
+
+        }
+
 
         private async void Timer_Tick(object sender, EventArgs e)
         {
@@ -97,11 +111,16 @@ namespace ScreenTime
                         {
                             end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                             Debug.WriteLine($"{currentApp}, Start-{start}, End-{end}");
-                            Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
+                            if (!DesignMode)
+                            {
+                                await Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
+                            }
+                            
+
                             currentApp = null; // Reset currentApp
                         }
-                        appString.Text = "Tracking paused for system app";
-                        return; // Skip tracking this application
+                         appString.Text = "Tracking paused for system app";
+                         return;
                     }
 
                     if (currentDay != today)
@@ -110,12 +129,16 @@ namespace ScreenTime
                         {
                             end = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - 1;
                             Debug.WriteLine($"{currentApp}, Start-{start}, End-{end}");
-                            Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
+
+                            if (!DesignMode)
+                            {
+                                await Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
+                            }
+
                         }
 
                         today = currentDay;
                     }
-
 
 
                     if (currentApp != processName)
@@ -124,7 +147,11 @@ namespace ScreenTime
                         {
                             end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                             Debug.WriteLine($"{currentApp}, Start-{start}, End-{end}");
-                            Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
+
+                            if (!DesignMode)
+                            {
+                                await Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
+                            }
                         }
 
                         currentApp = processName;
@@ -229,12 +256,13 @@ namespace ScreenTime
             string testing = $"Last update: {updateTime}\nTimezone: {savedTimeZone}\n";
 
             var sortedAppUsage = appUsageSeconds.OrderByDescending(app => app.Value);
+            
 
             int totalUsage = 0;
 
             foreach (var app in sortedAppUsage)
             {
-                //Debug.WriteLine($"{app.Key}: {app.Value} seconds");
+                Debug.WriteLine($"{app.Key}: {app.Value} seconds");
 
 
                 if (app.Value > 3599)

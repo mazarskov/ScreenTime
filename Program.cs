@@ -16,8 +16,8 @@ namespace ScreenTime
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
             DatabaseHelper.InitializeDatabase();
+            Application.Run(new MainForm());
         }
     }
 }

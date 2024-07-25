@@ -79,6 +79,7 @@ namespace ScreenTime
                         await cmd.ExecuteNonQueryAsync();
                     }
                 }
+                Debug.WriteLine($"Added {appName}, Start-{startTime}, End - {endTime} to databse");
             }
             catch (System.IO.FileLoadException ex)
             {
