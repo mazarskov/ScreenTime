@@ -32,13 +32,14 @@
             this.todayUsageLbl = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.statusLbl = new System.Windows.Forms.Label();
+            this.defaultLbl = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // appString
             // 
             this.appString.AutoSize = true;
             this.appString.Font = new System.Drawing.Font("Sans Serif Collection", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.appString.Location = new System.Drawing.Point(285, 0);
+            this.appString.Location = new System.Drawing.Point(309, 31);
             this.appString.Name = "appString";
             this.appString.Size = new System.Drawing.Size(155, 32);
             this.appString.TabIndex = 1;
@@ -48,20 +49,20 @@
             // todayUsageLbl
             // 
             this.todayUsageLbl.AutoSize = true;
-            this.todayUsageLbl.Location = new System.Drawing.Point(3, 31);
+            this.todayUsageLbl.Location = new System.Drawing.Point(3, 50);
             this.todayUsageLbl.Name = "todayUsageLbl";
-            this.todayUsageLbl.Size = new System.Drawing.Size(35, 13);
+            this.todayUsageLbl.Size = new System.Drawing.Size(227, 13);
             this.todayUsageLbl.TabIndex = 3;
-            this.todayUsageLbl.Text = "label1";
+            this.todayUsageLbl.Text = "Press the \"Reload\" button to get todays usage";
             this.todayUsageLbl.Click += new System.EventHandler(this.todayUsageLbl_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(6, 5);
+            this.button1.Location = new System.Drawing.Point(0, 24);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 16;
-            this.button1.Text = "reload";
+            this.button1.Text = "Reload";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -75,17 +76,28 @@
             this.statusLbl.Text = "Offline";
             this.statusLbl.Click += new System.EventHandler(this.statusLbl_Click);
             // 
+            // defaultLbl
+            // 
+            this.defaultLbl.AutoSize = true;
+            this.defaultLbl.Font = new System.Drawing.Font("Roboto", 15.75F);
+            this.defaultLbl.Location = new System.Drawing.Point(350, 0);
+            this.defaultLbl.Name = "defaultLbl";
+            this.defaultLbl.Size = new System.Drawing.Size(68, 25);
+            this.defaultLbl.TabIndex = 18;
+            this.defaultLbl.Text = "Home";
+            // 
             // HomeControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.defaultLbl);
             this.Controls.Add(this.statusLbl);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.todayUsageLbl);
             this.Controls.Add(this.appString);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "HomeControl";
-            this.Size = new System.Drawing.Size(802, 467);
+            this.Size = new System.Drawing.Size(800, 460);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -96,5 +108,6 @@
         private System.Windows.Forms.Label todayUsageLbl;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label statusLbl;
+        private System.Windows.Forms.Label defaultLbl;
     }
 }

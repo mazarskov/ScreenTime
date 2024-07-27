@@ -34,18 +34,21 @@
             // reportsLbl
             // 
             this.reportsLbl.AutoSize = true;
-            this.reportsLbl.Font = new System.Drawing.Font("Roboto", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.reportsLbl.Location = new System.Drawing.Point(346, 18);
+            this.reportsLbl.Font = new System.Drawing.Font("Roboto", 15.75F);
+            this.reportsLbl.Location = new System.Drawing.Point(350, 0);
+            this.reportsLbl.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.reportsLbl.Name = "reportsLbl";
-            this.reportsLbl.Size = new System.Drawing.Size(76, 23);
+            this.reportsLbl.Size = new System.Drawing.Size(89, 25);
             this.reportsLbl.TabIndex = 4;
-            this.reportsLbl.Text = "Reports";
+            this.reportsLbl.Text = "Settings";
             // 
             // ReportsControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.reportsLbl);
+            this.Font = new System.Drawing.Font("Roboto", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "ReportsControl";
             this.Size = new System.Drawing.Size(800, 460);
             this.ResumeLayout(false);

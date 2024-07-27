@@ -49,7 +49,10 @@ namespace ScreenTime
         {
             System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
             timer.Interval = 1000; // 1 second
-            timer.Tick += Timer_Tick;
+            if (!DesignMode)
+            {
+                timer.Tick += Timer_Tick;
+            }
             timer.Start();
         }
 
@@ -176,6 +179,24 @@ namespace ScreenTime
                     }
 
                     appString.Text = $"{finString}";
+                }
+                else
+                {
+                     //TODO: rn doesnt stop the db recoprding process
+                                                       // If the current app is being tracked, stop tracking it
+                    if (currentApp != null)
+                    {
+                        end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                        Debug.WriteLine($"{currentApp}, Start-{start}, End-{end}");
+                        if (!DesignMode)
+                        {
+                            await Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
+                        }
+
+
+                        currentApp = null; // Reset currentApp
+                    }
+                    appString.Text = $"No active app";
                 }
             }
             finally

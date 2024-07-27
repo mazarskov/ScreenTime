@@ -47,10 +47,10 @@
             // aboutLbl
             // 
             this.aboutLbl.AutoSize = true;
-            this.aboutLbl.Font = new System.Drawing.Font("Roboto", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutLbl.Location = new System.Drawing.Point(360, 14);
+            this.aboutLbl.Font = new System.Drawing.Font("Roboto", 15.75F);
+            this.aboutLbl.Location = new System.Drawing.Point(350, 0);
             this.aboutLbl.Name = "aboutLbl";
-            this.aboutLbl.Size = new System.Drawing.Size(60, 23);
+            this.aboutLbl.Size = new System.Drawing.Size(69, 25);
             this.aboutLbl.TabIndex = 3;
             this.aboutLbl.Text = "About";
             // 
@@ -205,7 +205,7 @@
             this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.aboutLbl);
             this.Name = "AboutControl";
-            this.Size = new System.Drawing.Size(802, 467);
+            this.Size = new System.Drawing.Size(800, 460);
             this.ResumeLayout(false);
             this.PerformLayout();
 

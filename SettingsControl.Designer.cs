@@ -41,11 +41,11 @@
             // 
             this.settingsLbl.AutoSize = true;
             this.settingsLbl.Font = new System.Drawing.Font("Roboto", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.settingsLbl.Location = new System.Drawing.Point(353, 21);
+            this.settingsLbl.Location = new System.Drawing.Point(350, 0);
             this.settingsLbl.Name = "settingsLbl";
-            this.settingsLbl.Size = new System.Drawing.Size(89, 25);
+            this.settingsLbl.Size = new System.Drawing.Size(86, 25);
             this.settingsLbl.TabIndex = 0;
-            this.settingsLbl.Text = "Settings";
+            this.settingsLbl.Text = "Reports";
             this.settingsLbl.Click += new System.EventHandler(this.settingsLbl_Click);
             // 
             // dbButton
@@ -89,9 +89,9 @@
             this.dayUsageLbl.AutoSize = true;
             this.dayUsageLbl.Location = new System.Drawing.Point(4, 47);
             this.dayUsageLbl.Name = "dayUsageLbl";
-            this.dayUsageLbl.Size = new System.Drawing.Size(35, 13);
+            this.dayUsageLbl.Size = new System.Drawing.Size(276, 13);
             this.dayUsageLbl.TabIndex = 6;
-            this.dayUsageLbl.Text = "label1";
+            this.dayUsageLbl.Text = "Select a date from the calender to see stats from that day";
             this.dayUsageLbl.Click += new System.EventHandler(this.dayUsageLbl_Click);
             // 
             // SettingsControl
