@@ -56,13 +56,7 @@ namespace ScreenTime
             timer.Start();
         }
 
-        private void InitDbTimer()
-        {
-            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            timer.Interval = 5000; // 1 second
-            timer.Tick += DbTimer_Tick;
-            timer.Start();
-        }
+
 
         private void UpdateStatus(string newStatus)
         {
@@ -71,13 +65,8 @@ namespace ScreenTime
             Debug.WriteLine($"Sent status: {status}");
         }
 
-        private async void DbTimer_Tick(object sender, EventArgs e)
-        {
 
-        }
-
-
-        private async void Timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
             System.Windows.Forms.Timer timer = (System.Windows.Forms.Timer)sender;
             timer.Stop();
@@ -115,11 +104,13 @@ namespace ScreenTime
                         {
                             end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                             Debug.WriteLine($"{currentApp}, Start-{start}, End-{end}");
+                            /*
                             if (!DesignMode)
                             {
                                 await Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
                             }
-                            
+                            */
+                            DatabaseHelper.InsertData(currentApp, start, end);
 
                             currentApp = null; // Reset currentApp
                         }
@@ -133,11 +124,13 @@ namespace ScreenTime
                         {
                             end = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - 1;
                             Debug.WriteLine($"{currentApp}, Start-{start}, End-{end}");
-
+                            /*
                             if (!DesignMode)
                             {
                                 await Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
                             }
+                            */
+                            DatabaseHelper.InsertData(currentApp, start, end);
 
                         }
 
@@ -152,10 +145,13 @@ namespace ScreenTime
                             end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                             Debug.WriteLine($"{currentApp}, Start-{start}, End-{end}");
 
+                            /*
                             if (!DesignMode)
                             {
                                 await Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
                             }
+                            */
+                            DatabaseHelper.InsertData(currentApp, start, end);
                         }
 
                         currentApp = processName;
@@ -189,15 +185,19 @@ namespace ScreenTime
                     {
                         end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                         Debug.WriteLine($"{currentApp}, Start-{start}, End-{end}");
+                        /*
                         if (!DesignMode)
                         {
                             await Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
                         }
-
+                        */
+                        DatabaseHelper.InsertData(currentApp, start, end);
 
                         currentApp = null; // Reset currentApp
                     }
                     appString.Text = $"No active app";
+                    UpdateStatus("Online");
+                    return;
                 }
             }
             finally
@@ -251,9 +251,11 @@ namespace ScreenTime
                 UpdateStatus("Offline");
                 end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 Debug.WriteLine($"{currentApp}, Start-{start}, End-{end}");
-                Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
+                //Task.Run(() => DatabaseHelper.InsertDataAsync(currentApp, start, end));
+                DatabaseHelper.InsertData(currentApp, start, end);
             }
             cancellationTokenSource.Dispose();
+            DatabaseHelper.Dispose();
         }
 
         public void TodaysUsage()
