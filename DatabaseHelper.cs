@@ -62,7 +62,7 @@ namespace ScreenTime
         
         public static async Task InsertDataAsync(string appName, long startTime, long endTime)
         {
-
+            Stopwatch stopwatch = Stopwatch.StartNew();
             try
             {
                 using (SQLiteConnection conn = new SQLiteConnection(connectionString))
@@ -78,8 +78,11 @@ namespace ScreenTime
                         cmd.Parameters.AddWithValue("@EndTime", endTime);
                         await cmd.ExecuteNonQueryAsync();
                     }
+                    stopwatch.Stop();
                 }
                 Debug.WriteLine($"Added {appName}, Start-{startTime}, End - {endTime} to databse");
+
+                Debug.WriteLine($"Time elapsed for db operation: {stopwatch.ElapsedMilliseconds}");
             }
             catch (System.IO.FileLoadException ex)
             {

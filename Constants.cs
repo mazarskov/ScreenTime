@@ -22,7 +22,16 @@ namespace ScreenTime
             "SearchHost.exe",
             "Rainmeter.exe",
             "ApplicationFrameHost.exe",
-            "FortniteClient-Win64-Shipping_EAC_EOS.exe"
+            "FortniteClient-Win64-Shipping_EAC_EOS.exe",
+            "NVIDIA Overlay.exe",
+            "StartMenuExperienceHost.exe",
+            "CredentialUIBroker.exe",
+            "mstsc.exe",
+            "RiotClientServices.exe",
+            "dllhost.exe",
+            "msiexec.exe",
+            "AVGUI.exe",
+            "gamingservicestcui.exe"
             // Add more process names as needed
         };
 

@@ -81,6 +81,7 @@ namespace ScreenTime
         {
             System.Windows.Forms.Timer timer = (System.Windows.Forms.Timer)sender;
             timer.Stop();
+
             int currentDay = DateTimeOffset.UtcNow.Day;
             try
             {
