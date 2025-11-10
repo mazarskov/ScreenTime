@@ -1,6 +1,6 @@
 # ScreenTime
 
-ScreenTime is an app to track how much time you have spend across various applications on Windows.  
+ScreenTime is an app to track how much time you have spent across various applications on Windows.  
 
 The app is stil in development, so any feedback and suggestions are appreciated! 
 
@@ -9,7 +9,7 @@ The app is stil in development, so any feedback and suggestions are appreciated!
 
 - Currently focused app tracking every second.
 - App usage history, by calendar day.
-- Fully local databse, no imternet connection or account creation required.
+- Fully local database, no internet connection or account creation required.
 - App usage history, by hour. (W.I.P)
 - User-set status according to the currently focused app. (W.I.P)
 
